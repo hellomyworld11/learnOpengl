@@ -1,0 +1,27 @@
+﻿生成启动时间为 2023/4/13 15:07:18。
+     1>项目“F:\mycode\sourceCC++\learnOpengl\learnOpengl\learnOpengl.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt OpenglDemo1_2.cpp main.cpp
+         OpenglDemo1_2.cpp
+     1>OpenglDemo1_2.cpp(210): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>OpenglDemo1_2.cpp(559): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>OpenglDemo1_2.cpp(566): warning C4244: “参数”: 从“double”转换到“GLfloat”，可能丢失数据
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"F:\mycode\sourceCC++\learnOpengl\x64\Release\learnOpengl.exe" /NOLOGO glfw3.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"F:\mycode\sourceCC++\learnOpengl\x64\Release\learnOpengl.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\mycode\sourceCC++\learnOpengl\x64\Release\learnOpengl.lib" /MACHINE:X64 x64\Release\glad.obj
+         x64\Release\main.obj
+         x64\Release\OpenglDemo.obj
+         x64\Release\OpenglDemo1_2.obj
+         x64\Release\shader.obj
+     1>LINK : warning LNK4098: 默认库“MSVCRTD”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+         正在生成代码
+         4 of 169 functions ( 2.4%) were compiled, the rest were copied from previous compilation.
+           1 functions were new in current compilation
+           1 functions had inline decision re-evaluated but remain unchanged
+         已完成代码的生成
+         learnOpengl.vcxproj -> F:\mycode\sourceCC++\learnOpengl\x64\Release\learnOpengl.exe
+     1>已完成生成项目“F:\mycode\sourceCC++\learnOpengl\learnOpengl\learnOpengl.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:01.14
