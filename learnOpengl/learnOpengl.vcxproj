@@ -127,12 +127,18 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenglDemo.cpp" />
     <ClCompile Include="OpenglDemo1_2.cpp" />
+    <ClCompile Include="OpenglDemo1_3.cpp" />
+    <ClCompile Include="OpenglDemo1_4.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenglDemo.h" />
     <ClInclude Include="OpenglDemo1_2.h" />
+    <ClInclude Include="OpenglDemo1_3.h" />
+    <ClInclude Include="OpenglDemo1_4.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
