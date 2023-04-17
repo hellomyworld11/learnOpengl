@@ -2,6 +2,7 @@
 #include "OpenglDemo1_2.h"
 #include "OpenglDemo1_3.h"
 #include "OpenglDemo1_4.h"
+#include "OpenglDemo1_5.h"
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -133,10 +134,10 @@ void templateRender()
 
 int main()
 {
-	COpenglDemo1_4 aDemo;
+	COpenglDemo1_5 aDemo;
 	//aDemo.render_trangle();
 	//aDemo.render_rectangle();
-	aDemo.render_translate_1_4_2();
+	aDemo.render_3D_rodate();
 	return 0;
 }
 
