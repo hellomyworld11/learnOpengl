@@ -138,7 +138,7 @@ int main()
 	COpenglDemo1_6 aDemo;
 	//aDemo.render_trangle();
 	//aDemo.render_rectangle();
-	aDemo.camera_free();
+	aDemo.camera_mouse();
 	return 0;
 }
 

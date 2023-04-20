@@ -20,6 +20,9 @@ public:
 	unsigned int createShader();
 public:
 	void camera_lookat();
+	//自由相机 W S A D
 	void camera_free();
+	//鼠标和键盘控制相机lookat 
+	void camera_mouse();
 };
 
