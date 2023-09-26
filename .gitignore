@@ -1,0 +1,61 @@
+
+
+#ci/cd
+*.dmgCanvas
+*.key
+*.pem
+*.backup
+*.bz2
+
+#Astyle temp
+*.orig
+
+#Mac Stuff
+*.dmg
+*.app
+
+# C++ objects and libs
+.DS_Store
+build-*
+*.slo
+*.lo
+*.o
+*.a
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
+
+#vs
+*.sdf
+*.sln
+*.filters
+*.user
+.vs
+x64
+Debug
+
+# Qt-es
+
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*-build-*
+
+
+
+*.autosave
+
+
+.idea
+.vscode
+
+# Do not accidently commit credentials...
+access-token*.txt
