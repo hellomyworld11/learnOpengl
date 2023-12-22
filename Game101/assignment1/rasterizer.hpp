@@ -71,14 +71,14 @@ class rasterizer
     void rasterize_wireframe(const Triangle& t);
 
   private:
-    Eigen::Matrix4f model;
-    Eigen::Matrix4f view;
-    Eigen::Matrix4f projection;
+    Eigen::Matrix4f model;		 //模型变换矩阵
+    Eigen::Matrix4f view;		 //视图变换矩阵
+    Eigen::Matrix4f projection;  //投影变换矩阵
 
     std::map<int, std::vector<Eigen::Vector3f>> pos_buf;
     std::map<int, std::vector<Eigen::Vector3i>> ind_buf;
 
-    std::vector<Eigen::Vector3f> frame_buf;
+    std::vector<Eigen::Vector3f> frame_buf; //帧缓冲对象 存储颜色数据
     std::vector<float> depth_buf;
     int get_index(int x, int y);
 
