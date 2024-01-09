@@ -32,9 +32,9 @@ const char *fragmentShaderSource = "#version 330 core\n"
 void templateRender()
 {
 	//***固定代码*****************************************
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwInit();	
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);   //主版本3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);	 //次版本3
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //核心模式
 
 	GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGl", NULL, NULL);
@@ -44,16 +44,16 @@ void templateRender()
 		glfwTerminate();
 		return ;
 	}
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(window);   //窗口上下文设置成当前线程的上下文
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  //glad 封装了获取函数指针的过程，便于使用opengl函数
 	{
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return ;
 	}
 	glViewport(0, 0, 800, 600);  //设置视口
 
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //视口随窗口变化而变化
 	//****************************************************
 
 
@@ -110,8 +110,8 @@ void templateRender()
 		processInput(window);
 
 		// 3. 绘制物体
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //设置清空屏幕所用的颜色
+		glClear(GL_COLOR_BUFFER_BIT);		 //清除颜色缓冲
 		//使用着色器程序，
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
@@ -120,15 +120,15 @@ void templateRender()
 		glDrawArrays(GL_LINE_LOOP, 0, 3);
 		glDrawArrays(GL_POINTS, 0, 3);
 		//刷新帧缓冲
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		glfwSwapBuffers(window);   //像素颜色缓冲
+		glfwPollEvents();  //检查 事件(键盘，鼠标等)
 	}
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteProgram(shaderProgram);
 
 	//退出flfw
-	glfwTerminate();
+	glfwTerminate(); //释放资源
 	return ;
 }
 

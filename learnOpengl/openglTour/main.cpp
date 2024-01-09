@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
+//通常用glad和 glfw 
 #include <GLEW/GL/glew.h>
 
 // Include GLFW
