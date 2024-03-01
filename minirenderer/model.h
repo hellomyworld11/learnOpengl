@@ -4,6 +4,7 @@
 #include <vector>
 #include "geometry.h"
 
+//模型类 加载模型获取面和对应的顶点
 class Model {
 private:
 	std::vector<Vec3f> verts_;
