@@ -28,7 +28,7 @@ Color::~Color()
 {
 }
 
-float& Color::operator[](const size_t i) 
+float& Color::operator[](const size_t i)
 {
 	//TO DO RECORD
 	//https://blog.csdn.net/doubleintfloat/article/details/111088990

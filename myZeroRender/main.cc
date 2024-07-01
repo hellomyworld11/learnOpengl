@@ -1,35 +1,46 @@
 #include <iostream>
 
 #include "device/Color.h"
+#include "device/Window.h"
+#include "device/FrameBuffer.h"
+#include <minwindef.h>
 
-using namespace std;
-class X {
-	int a;
-	int b;
-	union {
-		int c;
-		char d[4];
-		int e;
-	};
-public:
-	int getb() { return b; }
-	int getc() { return c; }
-	int gete() { return e; }
-};
+static const char* const WINDOW_TITLE = "ZeroRender";
 
+static const int WINDOW_WIDTH = 1000;
 
-	
+static const int WINDOW_HEIGHT = 600;
+
 
 
 int main()
 {
-	
-	Color c;
+	Window mainwin;
 
-	std::cout << c << std::endl;
-	
+	window_t *window;
 
-	std::cout << c << std::endl;
+	window = mainwin.Create(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	FrameBuffer* frame_buffer = new FrameBuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
+	
+	while (!mainwin.Should_Close(window))
+	{
+
+		frame_buffer->SetColor(100, 100, 50, 50, Color(255, 255, 255, 0));
+
+		mainwin.DrawBuffer(window, frame_buffer);
+
+		frame_buffer->FrameBufferClearColor(Color(255, 0, 255, 0));
+
+		frame_buffer->FrameBufferClearDepth(DBL_MAX);
+
+		mainwin.Input_PollEvents();
+	}
+
+	delete frame_buffer;
+
+	mainwin.Window_Destroy(window);
+
 	getchar();
 
 	return 0;

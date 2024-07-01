@@ -7,8 +7,17 @@
 class Color 
 {
 public:
-	Color();
-	
+	enum  Type
+	{
+		Black,
+		White,
+		Red,
+		Green,
+		Blue
+	};
+
+	explicit Color();
+
 	Color(const TGAColor& tagColor);
 
 	Color(float r, float g, float b, float a = 255);
@@ -23,16 +32,15 @@ public:
 		return out;
 	}
 
-
 public:
 
-	float r_ = 0;
+	float  r_ = 0;
 
-	float g_ = 0;
+	float  g_ = 0;
 
-	float b_ = 0;
-
-	float a_ = 0;
+	float  b_ = 0;
+	
+	float  a_ = 1;
 };
 
 
