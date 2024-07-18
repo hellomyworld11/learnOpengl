@@ -33,13 +33,13 @@ void FrameBuffer::SetDepth(int x, int y, float depth)
 {
 	size_t rownum = depth_buffer_.size();
 
-	if ( 0 <= x && x < rownum)
+	if ( 0 <= y && y < rownum)
 	{
-		size_t colnum = depth_buffer_[x].size();
+		size_t colnum = depth_buffer_[y].size();
 
-		if ( 0 <= y && y < colnum)
+		if ( 0 <= x && x < colnum)
 		{
-			depth_buffer_[x][y] = depth;
+			depth_buffer_[y][x] = depth;
 		}
 	}
 }
@@ -48,13 +48,13 @@ float FrameBuffer::GetDepth(int x, int y)
 {
 	size_t rownum = depth_buffer_.size();
 
-	if (0 <= x && x < rownum)
+	if (0 <= y && y < rownum)
 	{
-		size_t colnum = depth_buffer_[x].size();
+		size_t colnum = depth_buffer_[y].size();
 
-		if (0 <= y && y < colnum)
+		if (0 <= x && x < colnum)
 		{
-			return depth_buffer_[x][y];
+			return depth_buffer_[y][x];
 		}
 	}
 	return std::numeric_limits<float>::max();
@@ -64,13 +64,13 @@ void FrameBuffer::SetColor(int x, int y, Color color)
 {
 	size_t rownum = color_buffer_.size();
 
-	if (0 <= x && x < rownum)
+	if (0 <= y && y < rownum)
 	{
-		size_t colnum = color_buffer_[x].size();
+		size_t colnum = color_buffer_[y].size();
 
-		if (0 <= y && y < colnum)
+		if (0 <= x && x < colnum)
 		{
-			color_buffer_[x][y] = color;
+			color_buffer_[y][x] = color;
 		}
 	}
 }
@@ -90,13 +90,13 @@ Color FrameBuffer::GetColor(int x, int y)
 {
 	size_t rownum = color_buffer_.size();
 
-	if (0 <= x && x < rownum)
+	if (0 <= y && y < rownum)
 	{
-		size_t colnum = color_buffer_[x].size();
+		size_t colnum = color_buffer_[y].size();
 
-		if (0 <= y && y < colnum)
+		if (0 <= x && x < colnum)
 		{
-			return color_buffer_[x][y];
+			return color_buffer_[y][x];
 		}
 	}
 	return Color();
