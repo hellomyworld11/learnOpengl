@@ -12,6 +12,8 @@ static const int WINDOW_WIDTH = 800;
 
 static const int WINDOW_HEIGHT = 800;
 
+
+
 //绘制直线
 void line(FrameBuffer* frame, int x0, int y0, int x1, int y1, Color color)
 {
@@ -66,6 +68,23 @@ void line(FrameBuffer* frame, int x0, int y0, int x1, int y1, Color color)
 	
 }
 
+//绘制三角形
+void triangle(FrameBuffer* frame, Vec2i t0, Vec2i t1, Vec2i t2, Color color)
+{
+	line(frame, t0.x, t0.y, t1.x, t1.y, color);
+	line(frame, t1.x, t1.y, t2.x, t2.y, color);
+	line(frame, t2.x, t2.y, t0.x, t0.y, color);
+
+	//填充
+	//获取最大x ， y
+	std::vector<int> vecx = { t0.x, t1.x, t2.x };
+	std::vector<int> vecy = { t0.y, t1.y, t2.y };
+	int min = std:: int min = minElement(marks);
+	int max = maxElement(marks);
+	int max = maxElement(marks);
+	
+}
+
 
 int main()
 {
@@ -79,22 +98,32 @@ int main()
 	
 	Model *model = new Model("obj/african_head.obj");
 
+
+	Vec2i t0[3] = { Vec2i(10, 70),   Vec2i(50, 160),  Vec2i(70, 80) };
+	Vec2i t1[3] = { Vec2i(180, 50),  Vec2i(150, 1),   Vec2i(70, 180) };
+	Vec2i t2[3] = { Vec2i(180, 150), Vec2i(120, 160), Vec2i(130, 180) };
+	
+
 	while (!mainwin.Should_Close(window))
 	{
 //		frame_buffer->SetColor(500, 100, 50, 50, Color(255, 255, 255, 0));
-		for (int i = 0; i < model->nfaces(); i++) {
-			std::vector<int> face = model->face(i);
-			for (int j = 0; j < 3; j++) {
-				Vec3f v0 = model->vert(face[j]);
-				Vec3f v1 = model->vert(face[(j + 1) % 3]);
-				int x0 = (v0.x + 1.) * WINDOW_WIDTH  / 2.;
-				int y0 = (v0.y + 1.) * WINDOW_HEIGHT / 2.;
-				int x1 = (v1.x + 1.) * WINDOW_WIDTH  / 2.;
-				int y1 = (v1.y + 1.) * WINDOW_HEIGHT / 2.;
-				line(frame_buffer, x0, y0, x1, y1, Color(255, 255, 255, 0));
-			}
-		}
-
+		//网格化绘制模型
+// 		for (int i = 0; i < model->nfaces(); i++) {
+// 			std::vector<int> face = model->face(i);
+// 			for (int j = 0; j < 3; j++) {
+// 				Vec3f v0 = model->vert(face[j]);
+// 				Vec3f v1 = model->vert(face[(j + 1) % 3]);
+// 				int x0 = (v0.x + 1.) * WINDOW_WIDTH  / 2.;
+// 				int y0 = (v0.y + 1.) * WINDOW_HEIGHT / 2.;
+// 				int x1 = (v1.x + 1.) * WINDOW_WIDTH  / 2.;
+// 				int y1 = (v1.y + 1.) * WINDOW_HEIGHT / 2.;
+// 				line(frame_buffer, x0, y0, x1, y1, Color(255, 255, 255, 0));
+// 			}
+// 		}
+		//画三角形
+		triangle(frame_buffer, t0[0], t0[1], t0[2], Color(255, 0, 0, 0));
+		triangle(frame_buffer, t1[0], t1[1], t1[2], Color(0, 255, 0, 0));
+		triangle(frame_buffer, t2[0], t2[1], t2[2], Color(0, 0, 255, 0));
 //		line(frame_buffer, 13, 20, 80, 40, Color(255, 255, 255, 0));
 //		line(frame_buffer, 20, 13, 40, 80, Color(255, 0, 0, 0));
 //		line(frame_buffer, 80, 40, 13, 20, Color(255, 0, 0, 0));
