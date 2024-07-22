@@ -121,12 +121,15 @@
     <ClCompile Include="device\Color.cpp" />
     <ClCompile Include="device\FrameBuffer.cpp" />
     <ClCompile Include="main.cc" />
+    <ClCompile Include="mdl\Model.cpp" />
     <ClCompile Include="third\tgaimage.cpp" />
     <ClCompile Include="device\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="device\Color.h" />
     <ClInclude Include="device\FrameBuffer.h" />
+    <ClInclude Include="mdl\geometry.h" />
+    <ClInclude Include="mdl\Model.h" />
     <ClInclude Include="third\tgaimage.h" />
     <ClInclude Include="device\Window.h" />
   </ItemGroup>
