@@ -5,6 +5,7 @@
 #include "device/FrameBuffer.h"
 #include <minwindef.h>
 #include "mdl/Model.h"
+#include <algorithm>
 
 static const char* const WINDOW_TITLE = "ZeroRender";
 
@@ -68,6 +69,35 @@ void line(FrameBuffer* frame, int x0, int y0, int x1, int y1, Color color)
 	
 }
 
+
+int vecCross(Vec2i v1, Vec2i v2)
+{
+	return  v1.x*v2.y - v1.y*v2.x;
+}
+
+int vecdot(Vec2i v1, Vec2i v2)
+{
+	return (v1.x*v2.x + v1.y*v2.y);
+}
+
+bool IsPtInTriangle(Vec2i p, Vec2i t0, Vec2i t1, Vec2i t2)
+{
+	Vec2i v01 = t1 - t0;
+	Vec2i v12 = t2 - t1;
+	Vec2i v20 = t0 - t2;
+
+	Vec2i v0p = p - t0;
+	Vec2i v1p = p - t1;
+	Vec2i v2p = p - t2;
+
+	if ((vecCross(v01, v0p) * vecCross(v12, v1p) > 0) && 
+		(vecCross(v12, v1p) * vecCross(v20, v2p) > 0))
+	{
+		return true;
+	}
+	return false;
+}
+
 //绘制三角形
 void triangle(FrameBuffer* frame, Vec2i t0, Vec2i t1, Vec2i t2, Color color)
 {
@@ -79,10 +109,23 @@ void triangle(FrameBuffer* frame, Vec2i t0, Vec2i t1, Vec2i t2, Color color)
 	//获取最大x ， y
 	std::vector<int> vecx = { t0.x, t1.x, t2.x };
 	std::vector<int> vecy = { t0.y, t1.y, t2.y };
-	int min = std:: int min = minElement(marks);
-	int max = maxElement(marks);
-	int max = maxElement(marks);
-	
+	int maxx = *max_element(vecx.begin(), vecx.end());
+	int minx = *min_element(vecx.begin(), vecx.end());
+
+	int maxy = *max_element(vecy.begin(), vecy.end());
+	int miny = *min_element(vecy.begin(), vecy.end());
+
+	for (int i = minx; i <= maxx; i++)
+	{
+		for (int j = miny; j <= maxy; j++)
+		{
+			Vec2i pt(i, j);
+			if (IsPtInTriangle(pt, t0, t1, t2))
+			{
+				frame->SetColor(i, j, color);
+			}
+		}
+	}
 }
 
 
@@ -123,7 +166,7 @@ int main()
 		//画三角形
 		triangle(frame_buffer, t0[0], t0[1], t0[2], Color(255, 0, 0, 0));
 		triangle(frame_buffer, t1[0], t1[1], t1[2], Color(0, 255, 0, 0));
-		triangle(frame_buffer, t2[0], t2[1], t2[2], Color(0, 0, 255, 0));
+ 		triangle(frame_buffer, t2[0], t2[1], t2[2], Color(0, 0, 255, 0));
 //		line(frame_buffer, 13, 20, 80, 40, Color(255, 255, 255, 0));
 //		line(frame_buffer, 20, 13, 40, 80, Color(255, 0, 0, 0));
 //		line(frame_buffer, 80, 40, 13, 20, Color(255, 0, 0, 0));
