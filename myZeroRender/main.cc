@@ -164,12 +164,25 @@ int main()
 // 			}
 // 		}
 		//»­Èý½ÇÐÎ
-		triangle(frame_buffer, t0[0], t0[1], t0[2], Color(255, 0, 0, 0));
-		triangle(frame_buffer, t1[0], t1[1], t1[2], Color(0, 255, 0, 0));
- 		triangle(frame_buffer, t2[0], t2[1], t2[2], Color(0, 0, 255, 0));
+//		triangle(frame_buffer, t0[0], t0[1], t0[2], Color(255, 0, 0, 0));
+//		triangle(frame_buffer, t1[0], t1[1], t1[2], Color(0, 255, 0, 0));
+ //		triangle(frame_buffer, t2[0], t2[1], t2[2], Color(0, 0, 255, 0));
 //		line(frame_buffer, 13, 20, 80, 40, Color(255, 255, 255, 0));
 //		line(frame_buffer, 20, 13, 40, 80, Color(255, 0, 0, 0));
 //		line(frame_buffer, 80, 40, 13, 20, Color(255, 0, 0, 0));
+
+		for (int i = 0; i < model->nfaces(); i++) {
+			std::vector<int> face = model->face(i);
+			Vec2i screen_coords[3];
+			for (int j = 0; j < 3; j++) {
+				Vec3f world_coords = model->vert(face[j]);
+				screen_coords[j] = Vec2i((world_coords.x + 1.)*WINDOW_WIDTH / 2., (world_coords.y + 1.)*WINDOW_HEIGHT / 2.);
+			}
+			triangle(frame_buffer, screen_coords[0], screen_coords[1], screen_coords[2], Color(rand() % 255, rand() % 255, rand() % 255, 0));
+		}
+
+
+
 
 		mainwin.DrawBuffer(window, frame_buffer);
 
