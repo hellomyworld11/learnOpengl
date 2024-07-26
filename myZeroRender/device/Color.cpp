@@ -24,6 +24,49 @@ Color::Color(float r, float g, float b, float a /*= 255*/):
 
 }
 
+Color::Color(Type type)
+{
+	r_ = 0;
+	g_ = 0;
+	b_ = 0;
+	a_ = 255;
+	switch (type)
+	{
+	case Color::Black:
+		r_ = 0;
+		g_ = 0;
+		b_ = 0;
+		a_ = 255;
+		break;
+	case Color::White:
+		r_ = 255;
+		g_ = 255;
+		b_ = 255;
+		a_ = 255;
+		break;
+	case Color::Red:
+		r_ = 255;
+		g_ = 0;
+		b_ = 0;
+		a_ = 255;
+		break;
+	case Color::Green:
+		r_ = 0;
+		g_ = 255;
+		b_ = 0;
+		a_ = 255;
+		break;
+	case Color::Blue:
+		r_ = 0;
+		g_ = 0;
+		b_ = 255;
+		a_ = 255;
+		break;
+	default:
+		break;
+	}
+}
+
 Color::~Color()
 {
 }

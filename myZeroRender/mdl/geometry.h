@@ -1,8 +1,9 @@
 #pragma once
-
+#include <iostream>
 #include <cmath>
 
-template <class t> struct Vec2 {
+template <class t> 
+struct Vec2 {
 	union {
 		struct { t u, v; };
 		struct { t x, y; };
@@ -16,7 +17,8 @@ template <class t> struct Vec2 {
 	template <class > friend std::ostream& operator<<(std::ostream& s, Vec2<t>& v);
 };
 
-template <class t> struct Vec3 {
+template <class t> 
+struct Vec3 {
 	union {
 		struct { t x, y, z; };
 		struct { t ivert, iuv, inorm; };

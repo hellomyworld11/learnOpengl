@@ -3,7 +3,6 @@
 #include "../third/tgaimage.h"
 
 
-
 class Color 
 {
 public:
@@ -19,6 +18,8 @@ public:
 	explicit Color();
 
 	Color(const TGAColor& tagColor);
+
+	Color(Type type);
 
 	Color(float r, float g, float b, float a = 255);
 
@@ -40,7 +41,7 @@ public:
 
 	float  b_ = 0;
 	
-	float  a_ = 1;
+	float  a_ = 1; //255 完全不透明
 };
 
 
