@@ -22,7 +22,8 @@ void Render::Show(Model *model)
 
 	Vec3f light_dir(0, 0, -1); // define light_dir
 
-	lightShader(model, light_dir);
+	//lightShader(model, light_dir);
+	YBufferTest2D();
 	return;
 	if (num == 1)
 	{
@@ -101,6 +102,47 @@ void Render::Line(int x0, int y0, int x1, int y1, Color color)
 		}
 	}
 
+}
+
+void Render::Line(Vec2i p1, Vec2i p2, Color color)
+{
+	int x1 = p2.x;
+	int x0 = p1.x;
+	int y1 = p2.y;
+	int y0 = p1.y;
+	//y的变化速度和x不一样
+	bool steep = false;
+	if (abs(x1 - x0) < abs(y1 - y0))
+	{
+		std::swap(x0, y0);
+		std::swap(x1, y1);
+		steep = true;
+	}
+
+	if (x0 > x1)  //如果x0 大于x1 ，则需要交换 ，始终使x从小到大
+	{
+		std::swap(x0, x1);
+		std::swap(y0, y1);
+	}
+
+	int dx = x1 - x0;
+	int dy = y1 - y0;
+	int derror2 = std::abs(dy) * 2;
+	int error2 = 0;
+	int y = y0;
+	for (int x = x0; x <= x1; x++) {
+		if (steep) {
+			frame->SetColor(y, x, color);
+		}
+		else {
+			frame->SetColor(x, y, color);
+		}
+		error2 += derror2;
+		if (error2 > dx) {
+			y += (y1 > y0 ? 1 : -1);
+			error2 -= dx * 2;
+		}
+	}
 }
 
 bool Render::IsPtInTriangle(Vec2i p, Vec2i t0, Vec2i t1, Vec2i t2)
@@ -219,6 +261,47 @@ void Render::lightShader(Model *model, Vec3f lightdir)
 		if (compare(internsity, 0) > 0)
 		{
 			Triangle(screen_coords[0], screen_coords[1], screen_coords[2], Color(internsity * 255, internsity * 255, internsity * 255, 255));
+		}
+	}
+}
+
+void Render::YBufferTest2D()
+{
+	Line(Vec2i(20, 34), Vec2i(744, 400),  Color(Color::Red));
+	Line(Vec2i(120, 434), Vec2i(444, 400), Color(Color::Green));
+	Line(Vec2i(330, 463), Vec2i(594, 200), Color(Color::Blue));
+
+	// screen line
+	Line(Vec2i(10, 10), Vec2i(790, 10), Color(Color::White));
+
+	//绘制 ybuffer 之后的结果
+	int ybuffer[WINDOW_WIDTH];
+	for (int i = 0; i < WINDOW_WIDTH; i++)
+	{
+		ybuffer[i] = std::numeric_limits<int>::min();
+	}
+
+	rasterize2D(Vec2i(20, 34),	 Vec2i(744, 400), Color(Color::Red),  ybuffer);
+	rasterize2D(Vec2i(120, 434), Vec2i(444, 400), Color(Color::Green),ybuffer);
+	rasterize2D(Vec2i(330, 463), Vec2i(594, 200), Color(Color::Blue), ybuffer);
+
+}
+
+void Render::rasterize2D(Vec2i p0, Vec2i p1, Color color, int ybuffer[])
+{
+	if (p0.x > p1.x)
+	{
+		std::swap(p0, p1);
+	}
+
+	for (int x = p0.x; x <= p1.x; x++)
+	{
+		float t = (x - p0.x) / (float)(p1.x - p0.x);
+		int y = p0.y*(1. - t) + p1.y*t;
+		if (ybuffer[x] < y)
+		{
+			ybuffer[x] = y;
+			frame->SetColor(x, 10, color);
 		}
 	}
 }
