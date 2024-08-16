@@ -1,5 +1,7 @@
 #pragma once
 #include "mdl/geometry.h"
+#include <iostream>
+#include <vector>
 
 class FrameBuffer;
 class Color;
@@ -22,6 +24,9 @@ private:
 	bool IsPtInTriangle(Vec2i p, Vec2i t0, Vec2i t1, Vec2i t2);
 
 	void Triangle(Vec2i t0, Vec2i t1, Vec2i t2, Color color);
+
+	void TriangleWithZbuffer(Vec3f t0, Vec3f t1, Vec3f t2, Color color);
+
 	//网格绘制
 	void Wireframe(Model *model);
 	//随机颜色绘制
@@ -32,9 +37,15 @@ private:
 	void lightShader(Model *model, Vec3f lightdir);
 	//y buffer 2D
 	void YBufferTest2D();
-
+	//
 	void rasterize2D(Vec2i p0, Vec2i p1, Color color, int ybuffer[]);
+	//z buffer 3D
+	void lightShaderWithZbuffer(Model *model, Vec3f lightdir);
+
+
 private:
 	FrameBuffer *frame;
+
+	std::vector< std::vector<float> > zbuffer;
 };
 

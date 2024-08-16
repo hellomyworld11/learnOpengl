@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <cmath>
+#include <assert.h>
 
 template <class t> 
 struct Vec2 {
@@ -11,6 +12,8 @@ struct Vec2 {
 	};
 	Vec2() : u(0), v(0) {}
 	Vec2(t _u, t _v) : u(_u), v(_v) {}
+	t& operator[](const size_t i) { assert(i < 2); return raw[i]; }
+	const t& operator[](const size_t i) const { assert(i < 2); return data_[i]; }
 	inline Vec2<t> operator +(const Vec2<t> &V) const { return Vec2<t>(u + V.u, v + V.v); }
 	inline Vec2<t> operator -(const Vec2<t> &V) const { return Vec2<t>(u - V.u, v - V.v); }
 	inline Vec2<t> operator *(float f)          const { return Vec2<t>(u*f, v*f); }
@@ -26,6 +29,8 @@ struct Vec3 {
 	};
 	Vec3() : x(0), y(0), z(0) {}
 	Vec3(t _x, t _y, t _z) : x(_x), y(_y), z(_z) {}
+	t& operator[](const size_t i) { assert(i < 3); return raw[i]; }
+	const t& operator[](const size_t i) const { assert(i < 3); return data_[i]; }
 	inline Vec3<t> operator ^(const Vec3<t> &v) const { return Vec3<t>(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x); }
 	inline Vec3<t> operator +(const Vec3<t> &v) const { return Vec3<t>(x + v.x, y + v.y, z + v.z); }
 	inline Vec3<t> operator -(const Vec3<t> &v) const { return Vec3<t>(x - v.x, y - v.y, z - v.z); }

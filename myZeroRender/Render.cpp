@@ -8,6 +8,10 @@
 
 Render::Render(FrameBuffer *buffer):frame(buffer)
 {
+	std::vector<float> row_buffer(frame->width_, -std::numeric_limits<float>::max());
+	
+	zbuffer.resize(frame->height_, row_buffer);
+
 }
 
 Render::~Render()
@@ -23,7 +27,8 @@ void Render::Show(Model *model)
 	Vec3f light_dir(0, 0, -1); // define light_dir
 
 	//lightShader(model, light_dir);
-	YBufferTest2D();
+	//YBufferTest2D();
+	lightShaderWithZbuffer(model, light_dir);
 	return;
 	if (num == 1)
 	{
@@ -193,6 +198,40 @@ void Render::Triangle(Vec2i t0, Vec2i t1, Vec2i t2, Color color)
 	}
 }
 
+void Render::TriangleWithZbuffer(Vec3f t0, Vec3f t1, Vec3f t2, Color color)
+{
+	Vec2f bboxmin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+	Vec2f bboxmax(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+	Vec2f clamp(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
+
+	Vec3f pts[3];
+	pts[0] = t0;
+	pts[1] = t1;
+	pts[2] = t2;
+
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			bboxmin[j] = std::max(0.f, std::min(bboxmin[j], pts[i][j]));
+			bboxmax[j] = std::min(clamp[j], std::max(bboxmax[j], pts[i][j]));
+		}
+	}
+	Vec3f P;
+	for (P.x = bboxmin.x; P.x <= bboxmax.x; P.x++) {
+		for (P.y = bboxmin.y; P.y <= bboxmax.y; P.y++) {
+			Vec3f bc_screen = barycentric(pts[0], pts[1], pts[2], P);
+			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;
+			P.z = 0;
+			for (int i = 0; i < 3; i++) P.z += pts[i][2] * bc_screen[i];
+			float z = zbuffer[(int)P.y][(int)P.x];
+			if (compare(z, P.z)  < 0) {
+				zbuffer[(int)P.y][(int)P.x] = P.z;
+				frame->SetColor((int)P.x, (int)P.y, color);
+			}
+		}
+	}
+}
+
 void Render::Wireframe(Model *model)
 {
 	//网格化绘制模型
@@ -304,4 +343,39 @@ void Render::rasterize2D(Vec2i p0, Vec2i p1, Color color, int ybuffer[])
 			frame->SetColor(x, 10, color);
 		}
 	}
+}
+
+void Render::lightShaderWithZbuffer(Model *model, Vec3f lightdir)
+{
+	if (model == nullptr) return;
+
+	std::vector<float> row_buffer(frame->width_, -std::numeric_limits<float>::max());
+	zbuffer.clear();
+	zbuffer.resize(frame->height_, row_buffer);
+
+	for (int i = 0; i < model->nfaces(); i++)
+	{
+		std::vector<int> face = model->face(i);
+		Vec3f screen_coords[3];
+		Vec3f world_coords[3];
+		for (int j = 0; j < 3; j++)
+		{
+			Vec3f v = model->vert(face[j]);
+			screen_coords[j] = worldtoscreen(v);
+			world_coords[j] = v;
+		}
+
+		//获取光照方向和 面的法向的角度 得出 明亮强度
+		Vec3f srfnormal = (world_coords[2] - world_coords[0]) ^ (world_coords[1] - world_coords[0]);
+
+		srfnormal.normalize();
+
+		//点乘获取是否同向
+		float internsity = srfnormal * lightdir;
+		if (compare(internsity, 0) > 0)
+		{
+			TriangleWithZbuffer(screen_coords[0], screen_coords[1], screen_coords[2], Color(internsity * 255, internsity * 255, internsity * 255, 255));
+		}
+	}
+
 }
