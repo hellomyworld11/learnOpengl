@@ -128,27 +128,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="OpenglDemo.cpp" />
-    <ClCompile Include="OpenglDemo1_2.cpp" />
-    <ClCompile Include="OpenglDemo1_3.cpp" />
-    <ClCompile Include="OpenglDemo1_4.cpp" />
-    <ClCompile Include="OpenglDemo1_5.cpp" />
-    <ClCompile Include="OpenglDemo1_6.cpp" />
-    <ClCompile Include="openglTour\main.cpp" />
-    <ClCompile Include="shader.cpp" />
-    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="leanOpengl\glad.c" />
+    <ClCompile Include="leanOpengl\OpenglDemo.cpp" />
+    <ClCompile Include="leanOpengl\OpenglDemo1_2.cpp" />
+    <ClCompile Include="leanOpengl\OpenglDemo1_3.cpp" />
+    <ClCompile Include="leanOpengl\OpenglDemo1_4.cpp" />
+    <ClCompile Include="leanOpengl\OpenglDemo1_5.cpp" />
+    <ClCompile Include="leanOpengl\OpenglDemo1_6.cpp" />
+    <ClCompile Include="leanOpengl\shader.cpp" />
+    <ClCompile Include="leanOpengl\stb_image.cpp" />
+    <ClCompile Include="thechrno\firstOpengl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="OpenglDemo.h" />
-    <ClInclude Include="OpenglDemo1_2.h" />
-    <ClInclude Include="OpenglDemo1_3.h" />
-    <ClInclude Include="OpenglDemo1_4.h" />
-    <ClInclude Include="OpenglDemo1_5.h" />
-    <ClInclude Include="OpenglDemo1_6.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="leanOpengl\camera.h" />
+    <ClInclude Include="leanOpengl\OpenglDemo.h" />
+    <ClInclude Include="leanOpengl\OpenglDemo1_2.h" />
+    <ClInclude Include="leanOpengl\OpenglDemo1_3.h" />
+    <ClInclude Include="leanOpengl\OpenglDemo1_4.h" />
+    <ClInclude Include="leanOpengl\OpenglDemo1_5.h" />
+    <ClInclude Include="leanOpengl\OpenglDemo1_6.h" />
+    <ClInclude Include="leanOpengl\shader.h" />
+    <ClInclude Include="leanOpengl\stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

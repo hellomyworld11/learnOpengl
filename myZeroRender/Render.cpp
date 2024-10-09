@@ -6,6 +6,7 @@
 #include "device/config.h"
 #include "util/function.h"
 
+
 Render::Render(FrameBuffer *buffer):frame(buffer)
 {
 	std::vector<float> row_buffer(frame->width_, -std::numeric_limits<float>::max());
@@ -43,6 +44,30 @@ void Render::Show(Model *model)
 		TriangleFill();
 	}
 	
+}
+
+void Render::On_key_down(keycode_t key, bool pressed)
+{
+	if (pressed)
+	{
+		switch (key)
+		{
+		case keycode_t::KEY_A:
+		//	light->transform.position = proj<3>(rotate(TO_RADIANS(-5), 0, 1, 1) * embed<4>(light->transform.position, 1.f));
+			break;
+		case keycode_t::KEY_D:
+		//	light->transform.position = proj<3>(rotate(TO_RADIANS(5), 0, 1, 1) * embed<4>(light->transform.position, 1.f));
+			break;
+		case keycode_t::KEY_E:
+		//	enable_shadow = !enable_shadow;
+			break;
+		default:
+			break;
+		}
+	}
+
+
+
 }
 
 int vecCross(Vec2i v1, Vec2i v2)

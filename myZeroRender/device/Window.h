@@ -1,11 +1,16 @@
 #pragma once
 #include <windows.h>
-
+#include <winuser.h>
 #include "FrameBuffer.h"
+class Render;
 
 typedef struct st_window window_t;
 
-enum class keycode_t { KEY_A, KEY_D, KEY_S, KEY_W, KEY_SPACE, KEY_NUM } ;
+enum class keycode_t {
+	KEY_A, KEY_D, KEY_S, KEY_W, KEY_SPACE, KEY_Q, KEY_E, KEY_NUM
+} ;
+
+
 
 enum class button_t { BUTTON_L, BUTTON_R, BUTTON_NUM } ;
 
@@ -63,6 +68,13 @@ public:
 	void Input_PollEvents();
 
 	void Window_Destroy(window_t *window);
+
+	bool SetRenderSecene(Render* prender);
+public:
+	static void On_key_message(Window* winobj, window_t *window, WPARAM virtual_key, bool pressed);
+	static void On_Mouse_message();
+	static void On_Wheel_message();
+
 private:
 	bool Register_Window();
 
@@ -82,5 +94,8 @@ private:
 
 	void Image_Release(image_t* image);
 	
+private:
+
+	Render *curRender_ = nullptr;
 };
 

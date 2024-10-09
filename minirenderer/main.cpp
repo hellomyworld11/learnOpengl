@@ -63,23 +63,32 @@ int main(int argc, char** argv) {
     }
 	std::cout << "argc: " <<  argc << "argv[0] " << argv[0] << "argv[1] " << argv[1] << std::endl;
 
-    TGAImage framebuffer(width, height, TGAImage::RGB); // the output image
+//    TGAImage framebuffer(width, height, TGAImage::RGB); // the output image
     lookat(eye, center, up);                            // build the ModelView matrix
     viewport(width/8, height/8, width*3/4, height*3/4); // build the Viewport matrix
     projection((eye-center).norm());                    // build the Projection matrix
+
+	//最大值初始化 zbuffer
     std::vector<double> zbuffer(width*height, std::numeric_limits<double>::max());
 
-    for (int m=1; m<argc; m++) { // iterate through all input objects
+	cv::Mat cvImage(height, width, CV_8UC3);
+
+    for (int m = 1; m < argc; m++) { // iterate through all input objects
         Model model(argv[m]);
         Shader shader(model);
         for (int i=0; i<model.nfaces(); i++) { // for every triangle
             vec4 clip_vert[3]; // triangle coordinates (clip coordinates), written by VS, read by FS
             for (int j : {0,1,2})
                 shader.vertex(i, j, clip_vert[j]); // call the vertex shader for each triangle vertex
-            triangle(clip_vert, shader, framebuffer, zbuffer); // actual rasterization routine call
+//            triangle(clip_vert, shader, framebuffer, zbuffer); // actual rasterization routine call
+			triangle(clip_vert, shader, cvImage, zbuffer);
         }
     }
-    framebuffer.write_tga_file("framebuffer.tga");
+	
+	cv::cvtColor(cvImage, cvImage, cv::COLOR_RGB2BGR);
+	cv::imshow("image", cvImage);
+	cv::waitKey(0);
+  //  framebuffer.write_tga_file("framebuffer.tga");
     return 0;
 }
 

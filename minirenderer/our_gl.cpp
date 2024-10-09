@@ -54,3 +54,34 @@ void triangle(const vec4 clip_verts[3], IShader &shader, TGAImage &image, std::v
     }
 }
 
+void triangle(const vec4 clip_verts[3], IShader &shader, cv::Mat &image, std::vector<double> &zbuffer)
+{
+	vec4 pts[3] = { Viewport*clip_verts[0],    Viewport*clip_verts[1],    Viewport*clip_verts[2] };  // triangle screen coordinates before persp. division
+	vec2 pts2[3] = { proj<2>(pts[0] / pts[0][3]), proj<2>(pts[1] / pts[1][3]), proj<2>(pts[2] / pts[2][3]) };  // triangle screen coordinates after  perps. division
+
+	int bboxmin[2] = { image.cols - 1, image.rows - 1 };
+	int bboxmax[2] = { 0, 0 };
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 2; j++) {
+			bboxmin[j] = std::min(bboxmin[j], static_cast<int>(pts2[i][j]));
+			bboxmax[j] = std::max(bboxmax[j], static_cast<int>(pts2[i][j]));
+		}
+#pragma omp parallel for
+	for (int x = std::max(bboxmin[0], 0); x <= std::min(bboxmax[0], image.cols - 1); x++) {
+		for (int y = std::max(bboxmin[1], 0); y <= std::min(bboxmax[1], image.rows - 1); y++) {
+			vec3 bc_screen = barycentric(pts2, { static_cast<double>(x), static_cast<double>(y) });
+			vec3 bc_clip = { bc_screen.x / pts[0][3], bc_screen.y / pts[1][3], bc_screen.z / pts[2][3] };
+			bc_clip = bc_clip / (bc_clip.x + bc_clip.y + bc_clip.z); // check https://github.com/ssloy/tinyrenderer/wiki/Technical-difficulties-linear-interpolation-with-perspective-deformations
+			double frag_depth = vec3{ clip_verts[0][2], clip_verts[1][2], clip_verts[2][2] }*bc_clip;
+			if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z<0 || frag_depth > zbuffer[x + y*image.cols]) continue;
+			TGAColor color;
+			if (shader.fragment(bc_clip, color)) continue; // fragment shader can discard current fragment
+			zbuffer[x + y*image.cols] = frag_depth;
+			//image.set(x, y, color);
+			image.at<cv::Vec3b>(y, x)[0] = color.bgra[0];
+			image.at<cv::Vec3b>(y, x)[1] = color.bgra[1];
+			image.at<cv::Vec3b>(y, x)[2] = color.bgra[2];
+		}
+	}
+}
+

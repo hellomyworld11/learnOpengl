@@ -1,6 +1,11 @@
 #include "Window.h"
 //#include <stdlib.h>
 #include <assert.h>
+#include "../util/Logger.h"
+#include "../Render.h"
+
+static const char *const WINDOW_ENTRY_NAME = "MainWindow";
+static const char *const CURWINDOW_OBJ = "WindowObj";
 
 LRESULT CALLBACK _wind_Proc(HWND hWnd, UINT uMsg,
 	WPARAM wParam, LPARAM lParam);
@@ -36,7 +41,8 @@ window_t* Window::Create(const char *title, int width, int height)
 	window->memory_dc = memory_dc;
 	window->surface = surface;
 
-//	SetProp(handle, WINDOW_ENTRY_NAME, window);
+	SetProp(handle, WINDOW_ENTRY_NAME, window);
+	SetProp(handle, CURWINDOW_OBJ, this);
 	ShowWindow(handle, SW_SHOW);
 	return window;
 }
@@ -98,7 +104,7 @@ bool Window::Register_Window()
 	ATOM class_atom;
 	WNDCLASS winClass;
 	winClass.style = CS_HREDRAW | CS_VREDRAW;
-	winClass.lpfnWndProc = _wind_Proc;
+	winClass.lpfnWndProc = _wind_Proc; // _wind_Proc;
 	winClass.cbClsExtra = 0;
 	winClass.cbWndExtra = 0;
 	winClass.hInstance = GetModuleHandle(NULL);
@@ -138,10 +144,10 @@ HWND Window::Create_Window(const char *title, int width, int height)
 
 	AdjustWindowRect(&rect, style, VARIANT_FALSE);
 	
-	width = rect.right - rect.left;
-	height = rect.bottom - rect.top;
+//	width = rect.right - rect.left;
+//	height = rect.bottom - rect.top;
 
-	handle = CreateWindow(WINDOW_CLASS_NAME, title, style, CW_USEDEFAULT, CW_USEDEFAULT,
+ 	handle = CreateWindow(WINDOW_CLASS_NAME, title, style, CW_USEDEFAULT, CW_USEDEFAULT,
 		width, height, nullptr, nullptr, GetModuleHandle(nullptr), nullptr);
 
 	assert(handle != nullptr);
@@ -237,7 +243,7 @@ void Window::Image_Release(image_t* image)
 void Window::Window_Destroy(window_t *window)
 {
 	ShowWindow(window->handle, SW_HIDE);
-//	RemoveProp(window->handle, WINDOW_ENTRY_NAME);
+	RemoveProp(window->handle, WINDOW_ENTRY_NAME);
 
 	DeleteDC(window->memory_dc);
 	DestroyWindow(window->handle);
@@ -247,8 +253,101 @@ void Window::Window_Destroy(window_t *window)
 	free(window);
 }
 
+bool Window::SetRenderSecene(Render* prender)
+{
+	curRender_ = prender;
+}
+
+void Window::On_key_message(Window* winobj, window_t *window, WPARAM virtual_key, bool pressed)
+{
+	keycode_t key;
+	switch (virtual_key)
+	{
+	case 'A':
+		key = keycode_t::KEY_A;
+		break;
+	case 'D':
+		key = keycode_t::KEY_D;
+		break;
+	case 'W':
+		key = keycode_t::KEY_W;
+		break;
+	case 'S':
+		key = keycode_t::KEY_S;
+		break;
+	case 'Q':
+		key = keycode_t::KEY_Q;
+		break;
+	case 'E':
+		key = keycode_t::KEY_E;
+		break;
+	case VK_SPACE:
+		key = keycode_t::KEY_SPACE;
+		break;
+	default:
+		key = keycode_t::KEY_NUM;
+		break;
+	}
+	if (key < keycode_t::KEY_NUM)
+	{
+		if (winobj->curRender_)
+		{
+			winobj->curRender_->On_key_down(key, pressed);
+		}
+	}
+}
+
 LRESULT CALLBACK _wind_Proc(HWND hWnd, UINT uMsg,
 	WPARAM wParam, LPARAM lParam)
 {
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+ 	window_t *window = (window_t*)GetProp(hWnd, WINDOW_ENTRY_NAME);
+	Window *winObj = (Window*)GetProp(hWnd, CURWINDOW_OBJ);
+ 	if (window == NULL) return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	if (winObj == NULL) return DefWindowProc(hWnd, uMsg, wParam, lParam);
+
+	if (uMsg == WM_CLOSE) {
+		UINT ret =  MessageBox(NULL, "确认关闭当前窗口吗", "提示", MB_YESNO);
+//		window->should_close = 1;
+		window->should_close = (ret == IDYES);
+		return 0;
+	}
+	else if (uMsg == WM_KEYDOWN) {
+		LOG("WM_KEYDOWN");
+		Window::On_key_message(winObj, window, wParam, true);
+		return 0;
+	}
+	else if (uMsg == WM_KEYUP) {
+		LOG("WM_KEYUP");
+		Window::On_key_message(winObj, window, wParam, 0);
+		return 0;
+	}
+	else if (uMsg == WM_LBUTTONDOWN) {
+		LOG("WM_LBUTTONDOWN");
+	//	handle_button_message(window, BUTTON_L, 1);
+		return 0;
+	}
+	else if (uMsg == WM_RBUTTONDOWN) {
+		LOG("WM_RBUTTONDOWN");
+	//	handle_button_message(window, BUTTON_R, 1);
+		return 0;
+	}
+	else if (uMsg == WM_LBUTTONUP) {
+		LOG("WM_LBUTTONUP");
+	//	handle_button_message(window, BUTTON_L, 0);
+		return 0;
+	}
+	else if (uMsg == WM_RBUTTONUP) {
+		LOG("WM_RBUTTONUP");
+	//	handle_button_message(window, BUTTON_R, 0);
+		return 0;
+	}
+	else if (uMsg == WM_MOUSEWHEEL) {
+		LOG("WM_MOUSEWHEEL");
+		float offset = GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA;
+	//	handle_scroll_message(window, offset);
+		return 0;
+	}
+	else {
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	}
 }

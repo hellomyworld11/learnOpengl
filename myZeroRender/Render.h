@@ -2,7 +2,7 @@
 #include "mdl/geometry.h"
 #include <iostream>
 #include <vector>
-
+#include "device/Window.h"
 class FrameBuffer;
 class Color;
 class Model;
@@ -15,7 +15,13 @@ public:
 	~Render();
 
 	void Show(Model *model);
-
+	//对外设的响应
+	//键盘
+	void On_key_down(keycode_t key, bool pressed);
+	//鼠标
+	void On_Mouse_down();
+	//滚轮
+	void On_Wheel_scroll();
 private:
 	void Line(int x0, int y0, int x1, int y1, Color color);
 
@@ -42,7 +48,8 @@ private:
 	//z buffer 3D
 	void lightShaderWithZbuffer(Model *model, Vec3f lightdir);
 
-
+	//with camera
+	void Draw();
 private:
 	FrameBuffer *frame;
 

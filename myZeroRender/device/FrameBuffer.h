@@ -26,9 +26,10 @@ public:
 
 	void FrameBufferClearDepth(float depth);
 
-	int width_ = 0;  //x 列数
-	int height_ = 0; //y 行数
-	std::vector<std::vector<Color>> color_buffer_;
+	int width_ = 0;				//x 列数
+	int height_ = 0;			//y 行数
+	std::vector<std::vector<Color>>	   color_buffer_;
 	std::vector<std::vector<float>>    depth_buffer_;
+
 };
 

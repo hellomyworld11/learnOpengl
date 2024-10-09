@@ -6,6 +6,7 @@
 #include "mdl/Model.h"
 #include "device/config.h"
 #include "Render.h"
+#include "util/Logger.h"
 
 
 
@@ -24,6 +25,9 @@ int main(int argc, char *argv[])
 	Vec3f light_dir(0, 0, -1);
 
 	Render render(frame_buffer);
+
+	mainwin.SetRenderSecene(&render);
+//	LOG("hello:%s", "log init");
 
 	while (!mainwin.Should_Close(window))
 	{

@@ -144,6 +144,6 @@ int main()
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-	glViewport(0, 0, width / 2, height / 2);
+	glViewport(0, 0, width, height);
 }
 
