@@ -7,5 +7,5 @@ static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 static void processInput(GLFWwindow *window);
 
 
-//1.OpenGL创建窗口
+//1.OpenGL创建窗口 
 int openglWidet_main();
