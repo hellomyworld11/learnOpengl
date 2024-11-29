@@ -11,3 +11,6 @@ static void processInput(GLFWwindow *window);
 
 //2.OpenGLªÊ÷∆»˝Ω«–Œ
 int openglTangle_main();
+
+//opengl VAO VBO EBO ≤‚ ‘
+int openglTangle_test();

@@ -1,5 +1,5 @@
 #pragma once
-#include <glad/glad.h>   //用来方便调用opengl的函数
+#include <glad/glad.h>   //用来方便调用opengl的函数  必须放在最前面
 #include <GLFW/glfw3.h> //方便开发
 #include <iostream>
 
