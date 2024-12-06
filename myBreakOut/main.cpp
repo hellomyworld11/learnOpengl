@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
 	GLFWwindow *window = nullptr;
 
 	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);		//配置glfw,表示使用的opengl版本
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);//核心模式
 
 
 	window = glfwCreateWindow(800, 600, "break out", NULL, NULL);
@@ -23,15 +26,14 @@ int main(int argc, char *argv[])
 		exit(-1);
 	}
 
+	glfwMakeContextCurrent(window);  //需要放在gladloadglloader之前
+	
 	//初始化glad
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-
-
-	glfwMakeContextCurrent(window);
 
 //	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
