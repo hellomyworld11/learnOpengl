@@ -33,6 +33,7 @@ public:
 	
 	void    SetMatrix4(const char *name, const glm::mat4 &matrix, bool useShader = false);
 
+	unsigned int	getId() { return id_; }
 private:
 	void checkCompileErrors(unsigned int object);
 

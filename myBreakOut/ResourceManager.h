@@ -20,6 +20,7 @@ public:
 	static Texture2D getTexture(std::string name);
 
 	static void clear();
+
 private:
 	static Shader loadShaderFromFile(const char *vShaderFile, 
 		const char* fShaderFile, 
@@ -27,9 +28,10 @@ private:
 
 	static Texture2D loadTextureFromFile(const char *file, bool alpha);
 
-
+public:
 	static std::map<std::string, Shader> shaders_;
 
 	static std::map<std::string, Texture2D> textures_;
+
 };
 

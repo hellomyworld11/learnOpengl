@@ -23,6 +23,8 @@ public:
 	void update(float dt);
 
 	void render();
+
+	void setKey(int index, bool bPress = true) { keys_[index] = bPress; }
 private:
 	GameState state_;
 	unsigned int width_;

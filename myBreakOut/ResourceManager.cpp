@@ -4,6 +4,10 @@
 #include <sstream>
 #include "image/stb_image.h"
 
+
+std::map<std::string, Shader> ResourceManager::shaders_;
+std::map<std::string, Texture2D> ResourceManager::textures_;
+
 Shader ResourceManager::loadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
 {
 	shaders_[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
@@ -28,8 +32,17 @@ Texture2D ResourceManager::getTexture(std::string name)
 
 void ResourceManager::clear()
 {
-	shaders_.clear();
-	textures_.clear();
+//	shaders_.clear();
+//	textures_.clear();
+	for (auto iter : shaders_ )
+	{
+		glDeleteProgram(iter.second.getId());
+	}
+
+	for (auto iter : textures_)
+	{
+		glDeleteTextures(1, &iter.second.id_);
+	}
 }
 
 Shader ResourceManager::loadShaderFromFile(const char *vShaderFile, const char* fShaderFile, const char* gShaderFile /*= nullptr*/)
