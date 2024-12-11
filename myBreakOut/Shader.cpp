@@ -15,9 +15,9 @@ Shader& Shader::use()
 
 void Shader::compile(const char *vertexSrc, const char *fragmentsrc, const char *geometrySrc /*= nullptr*/)
 {
-	unsigned int vshader, fshader, gshader;
+	unsigned int vshader=0, fshader=0, gshader = 0;
 
-	if (vertexSrc)
+	if (vertexSrc != nullptr)
 	{
 		vshader = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vshader, 1, &vertexSrc, NULL);
@@ -25,7 +25,7 @@ void Shader::compile(const char *vertexSrc, const char *fragmentsrc, const char 
 		checkCompileErrors(vshader);
 	}
 
-	if (fshader)
+	if (fragmentsrc != nullptr)
 	{
 		fshader = glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fshader, 1, &fragmentsrc, NULL);
@@ -33,7 +33,7 @@ void Shader::compile(const char *vertexSrc, const char *fragmentsrc, const char 
 		checkCompileErrors(fshader);
 	}
 
-	if (gshader)
+	if (geometrySrc != nullptr)
 	{
 		gshader = glCreateShader(GL_GEOMETRY_SHADER);
 		glShaderSource(gshader, 1, &geometrySrc, NULL);

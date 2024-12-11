@@ -58,6 +58,10 @@ Shader ResourceManager::loadShaderFromFile(const char *vShaderFile, const char* 
 		stream << fstream.rdbuf();
 		vShaderSrc = stream.str();
 
+		fstream.close();
+	
+		stream.clear();
+		stream.str("");
 		fstream.open(fShaderFile, std::ios_base::in);
 		stream << fstream.rdbuf();
 		fShaderSrc = stream.str();
@@ -83,6 +87,10 @@ Texture2D ResourceManager::loadTextureFromFile(const char *file, bool alpha)
 {
 	int width, height, channel;
 	unsigned char* data = stbi_load(file, &width, &height, &channel, 0);
+	if (data == nullptr)
+	{		
+		std::cout << "Failed to load texture" << std::endl;
+	}
 
 	Texture2D texture;
 	if (alpha)

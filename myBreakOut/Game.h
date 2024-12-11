@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 const unsigned int keynum = 1024;
 
+class SpriteRenderer;
+
 class Game
 {
 public:
@@ -30,5 +32,7 @@ private:
 	unsigned int width_;
 	unsigned int height_;
 	bool	keys_[keynum];
+
+	SpriteRenderer* renderer_ = nullptr;
 };
 
