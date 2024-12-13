@@ -7,7 +7,7 @@
 
 
 Game::Game(unsigned int width, unsigned int height) :
-	width_{ width_ },
+	width_{ width },
 	height_{ height },
 	state_{ GameState::GAME_ACTIVE },
 	keys_ {}
@@ -29,7 +29,8 @@ void Game::init()
 
 	ResourceManager::getShader("sprite").use().setInteger("sprite", 0);
 	ResourceManager::getShader("sprite").SetMatrix4("projection", projecton);
-	
+	ResourceManager::getShader("sprite").use().SetVector3f("spriteColor", glm::vec3(1.0f, 0.0f, 0.0f));
+
 	renderer_ = new SpriteRenderer(ResourceManager::getShader("sprite"));
 
 	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/awesomeface.png", GL_TRUE, "face");
@@ -47,6 +48,6 @@ void Game::update(float dt)
 
 void Game::render()
 {
-	renderer_->drawSprite(ResourceManager::getTexture("face"), glm::vec2(200, 200)
-		, glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	renderer_->drawSprite(ResourceManager::getTexture("face"), glm::vec2(200.0f, 200.0f)
+		, glm::vec2(300.0f, 400.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }

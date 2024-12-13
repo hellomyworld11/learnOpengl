@@ -29,7 +29,7 @@ public:
 	void setKey(int index, bool bPress = true) { keys_[index] = bPress; }
 private:
 	GameState state_;
-	unsigned int width_;
+	unsigned int width_;			//不能传入0 传参错误导致一直显示不出结果，就是因为构造函数传的是自身
 	unsigned int height_;
 	bool	keys_[keynum];
 

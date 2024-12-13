@@ -16,7 +16,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	if (GLFW_KEY_ESCAPE == key || GLFW_PRESS)
+	if (GLFW_KEY_ESCAPE == key || action == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);		//配置glfw,表示使用的opengl版本
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);//核心模式
-
+	glfwWindowHint(GLFW_RESIZABLE, false);
 
 	window = glfwCreateWindow(screen_width, screen_height, "break out", NULL, NULL);
 	if (!window)
