@@ -20,9 +20,7 @@ GameObject::GameObject(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec
 
 }
 
-GameObject::~GameObject()
-{
-}
+
 
 void GameObject::draw(SpriteRenderer &renderer)
 {
