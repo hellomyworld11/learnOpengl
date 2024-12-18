@@ -1,9 +1,13 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "GameLevel.h"
+
 const unsigned int keynum = 1024;
 
 class SpriteRenderer;
+class BallObject;
 
 class Game
 {
@@ -13,6 +17,15 @@ public:
 		GAME_MENU,
 		GAME_WIN
 	};
+
+	enum class Direction {
+		UP,
+		RIGHT,
+		DOWN,
+		LEFT
+	};
+
+	typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
 	Game(unsigned int width, unsigned int height);
 
@@ -27,12 +40,29 @@ public:
 	void render();
 
 	void setKey(int index, bool bPress = true) { keys_[index] = bPress; }
+
+	void checkCollisions();
+
+	Collision checkCollisions(BallObject& ball, GameObject& brick);
+
+	Direction vectorDirection(glm::vec2 target);
 private:
 	GameState state_;
 	unsigned int width_;			//不能传入0 传参错误导致一直显示不出结果，就是因为构造函数传的是自身
 	unsigned int height_;
 	bool	keys_[keynum];
 
+	float player_velocity_ = (500.0f);
+	glm::vec2 ball_velocity_ =  glm::vec2(100.0f, -350.0f);
+	const float ball_radius_ = 12.5;	
+
+	std::vector<GameLevel> levels_;
+	unsigned int level_;
+
 	SpriteRenderer* renderer_ = nullptr;
+
+	GameObject *player_ = nullptr;
+
+	BallObject *ball_ = nullptr;
 };
 

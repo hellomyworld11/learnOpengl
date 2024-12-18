@@ -15,10 +15,13 @@ public:
 	void draw(SpriteRenderer& renderer);
 
 	bool isCompleted();
+
 public:
 	std::vector<GameObject> bricks_;
 private:
 	void init(std::vector<std::vector<unsigned int>> tileData,
 		unsigned int levelWidth, unsigned int levelHeight);
+
+	glm::vec3 getColor(int brickType);
 };
 
