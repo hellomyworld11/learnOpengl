@@ -25,7 +25,7 @@ public:
 		LEFT
 	};
 
-	typedef std::tuple<bool, Direction, glm::vec2> Collision;
+	typedef std::tuple<bool, Direction, glm::vec2> Collision;  //是否碰撞，碰撞时球的运动方向，最近点和球心点距离
 
 	Game(unsigned int width, unsigned int height);
 
@@ -46,6 +46,10 @@ public:
 	Collision checkCollisions(BallObject& ball, GameObject& brick);
 
 	Direction vectorDirection(glm::vec2 target);
+
+	void resetLevel();
+
+	void resetPlayer();
 private:
 	GameState state_;
 	unsigned int width_;			//不能传入0 传参错误导致一直显示不出结果，就是因为构造函数传的是自身

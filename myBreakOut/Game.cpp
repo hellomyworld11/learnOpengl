@@ -110,6 +110,12 @@ void Game::update(float dt)
 {
 	ball_->move(dt, width_);
 	checkCollisions();
+
+	if (ball_->postion_.y >= height_)
+	{
+		resetLevel();
+		resetPlayer();
+	}
 }
 
 void Game::render()
@@ -174,6 +180,30 @@ void Game::checkCollisions()
 			}
 		}
 	}
+
+	//ÇòºÍplay¼ì²âÅö×²
+	Collision collision = checkCollisions(*ball_, *player_);
+	if (std::get<0>(collision) && !ball_->isStuck_)
+	{
+		float centerboard = player_->postion_.x + player_->size_.x / 2.0f;
+		float distance = (ball_->postion_.x + ball_->radius_) - centerboard;
+		float percentage = distance / (player_->size_.x / 2.0f);
+
+		float strength = 2.0f;
+		glm::vec2 oldVelocity = ball_->velocity_;
+		ball_->velocity_.x = ball_velocity_.x * strength * percentage;
+		ball_->velocity_.y = -1.0f * abs(ball_->velocity_.y);
+		std::cout << " 1 ball_->velocity_: " << ball_->velocity_.x << " " << ball_->velocity_.y << std::endl;
+		ball_->velocity_ = glm::normalize(ball_->velocity_) * glm::length(oldVelocity);
+
+		std::cout << "oldVelocity: " << oldVelocity.x << " " << oldVelocity.y << std::endl;
+		std::cout << "glm::length(oldVelocity): " << glm::length(oldVelocity) << std::endl;
+
+		std::cout << "glm::normalize(ball_->velocity_) " << glm::normalize(ball_->velocity_).x << " " << glm::normalize(ball_->velocity_).y << std::endl;
+
+		std::cout << "2 ball_->velocity_: " << ball_->velocity_.x << " " << ball_->velocity_.y << std::endl;
+	
+	}
 }
 
 Game::Collision Game::checkCollisions(BallObject& ball, GameObject& brick)
@@ -226,4 +256,24 @@ Game::Direction Game::vectorDirection(glm::vec2 target)
 	}
 
 	return (Direction)maxindex;
+}
+
+void Game::resetLevel()
+{
+	if (this->level_ == 0)
+		this->levels_[0].load("F:/mycode/sourceCC++/learnOpengl/myBreakOut/levels/one.lvl", width_, this->height_ / 2);
+	else if (this->level_ == 1)
+		this->levels_[1].load("F:/mycode/sourceCC++/learnOpengl/myBreakOut/levels/two.lvl", width_, this->height_ / 2);
+	else if (this->level_ == 2)
+		this->levels_[2].load("F:/mycode/sourceCC++/learnOpengl/myBreakOut/levels/three.lvl", width_, this->height_ / 2);
+	else if (this->level_ == 3)
+		this->levels_[3].load("F:/mycode/sourceCC++/learnOpengl/myBreakOut/levels/four.lvl", width_, this->height_ / 2);
+}
+
+void Game::resetPlayer()
+{
+	glm::vec2 size(100.0f, 20.0f);
+	player_->size_ = size;
+	player_->postion_ = glm::vec2(this->width_ / 2.0f - size.x / 2.0f, this->height_ - size.y);
+	ball_->reset(player_->postion_ + glm::vec2(size.x / 2.0f - ball_radius_, -(ball_radius_ * 2.0f)), ball_velocity_);
 }
