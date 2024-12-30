@@ -5,6 +5,7 @@
 #include "BallObject.h"
 #include <tuple>
 #include <stdlib.h>
+#include "ParticleGenerator.h"
 
 
 
@@ -25,6 +26,7 @@ void Game::init()
 {
 	//加载 shader  texture
 	ResourceManager::loadShader("F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/sprite.vs", "F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/sprite.fs", nullptr, "sprite");
+	ResourceManager::loadShader("F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/particle.vs", "F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/particle.fs", nullptr, "particle");
 	
 	glm::mat4 projecton = glm::ortho(0.0f, static_cast<GLfloat>(width_), static_cast<GLfloat>(height_)
 		,0.0f, -1.0f, 1.0f);
@@ -32,6 +34,8 @@ void Game::init()
 	ResourceManager::getShader("sprite").use().setInteger("sprite", 0);
 	ResourceManager::getShader("sprite").SetMatrix4("projection", projecton);
 	ResourceManager::getShader("sprite").use().SetVector3f("spriteColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	ResourceManager::getShader("particle").use().setInteger("sprite", 0);
+	ResourceManager::getShader("particle").SetMatrix4("projection", projecton);
 
 	renderer_ = new SpriteRenderer(ResourceManager::getShader("sprite"));
 
@@ -44,6 +48,8 @@ void Game::init()
 	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/block.png", GL_FALSE, "block");
 	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/paddle.png", GL_TRUE, "player");
 	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/awesomeface.png", GL_TRUE, "ball");
+
+	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/particle.png", GL_TRUE, "particle");
 
 	//load level
 	GameLevel level1;
@@ -69,6 +75,8 @@ void Game::init()
 	//ball
 	glm::vec2 ballPos = glm::vec2(width_/2.0f - ball_radius_, height_ - size.y - ball_radius_*2.0f);
 	ball_ = new BallObject(ballPos, ball_radius_, ball_velocity_, ResourceManager::getTexture("ball"));
+
+	particles_ = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 500);
 }
 
 void Game::processInput(float dt)
@@ -109,7 +117,10 @@ void Game::processInput(float dt)
 void Game::update(float dt)
 {
 	ball_->move(dt, width_);
+	
 	checkCollisions();
+
+	particles_->update(dt, *ball_, 2, glm::vec2(ball_->radius_ / 2.0f));
 
 	if (ball_->postion_.y >= height_)
 	{
@@ -132,6 +143,8 @@ void Game::render()
 		levels_[level_].draw(*renderer_);
 		//绘制角色
 		player_->draw(*renderer_);
+		//绘制粒子
+		particles_->draw();
 		//绘制球
 		ball_->draw(*renderer_);
 	}

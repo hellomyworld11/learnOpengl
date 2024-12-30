@@ -8,6 +8,7 @@ const unsigned int keynum = 1024;
 
 class SpriteRenderer;
 class BallObject;
+class ParticleGenerator;
 
 class Game
 {
@@ -68,5 +69,8 @@ private:
 	GameObject *player_ = nullptr;
 
 	BallObject *ball_ = nullptr;
+
+	//СЃзг
+	ParticleGenerator *particles_ = nullptr;
 };
 
