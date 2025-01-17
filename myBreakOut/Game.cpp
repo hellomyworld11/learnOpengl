@@ -79,6 +79,23 @@ void Game::init()
 	particles_ = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 500);
 }
 
+
+
+void Game::update(float dt)
+{
+	ball_->move(dt, width_);
+	
+	checkCollisions();
+
+	particles_->update(dt, *ball_, 2, glm::vec2(ball_->radius_ / 2.0f));
+
+	if (ball_->postion_.y >= height_)
+	{
+		resetLevel();
+		resetPlayer();
+	}
+}
+
 void Game::processInput(float dt)
 {
 	if (state_ == GameState::GAME_ACTIVE)
@@ -111,21 +128,6 @@ void Game::processInput(float dt)
 		{
 			ball_->isStuck_ = false;
 		}
-	}
-}
-
-void Game::update(float dt)
-{
-	ball_->move(dt, width_);
-	
-	checkCollisions();
-
-	particles_->update(dt, *ball_, 2, glm::vec2(ball_->radius_ / 2.0f));
-
-	if (ball_->postion_.y >= height_)
-	{
-		resetLevel();
-		resetPlayer();
 	}
 }
 
