@@ -3,6 +3,9 @@
 #include <GLFW/glfw3.h>
 
 #include "GameLevel.h"
+#include "third/include/irrKlang/irrKlang.h"
+
+using namespace irrklang;
 
 const unsigned int keynum = 1024;
 
@@ -72,5 +75,12 @@ private:
 
 	//粒子
 	ParticleGenerator *particles_ = nullptr;
+
+	//后处理
+	PostProcessor *effects_ = nullptr;
+	float shakeTime_ = 0.0f;
+
+	//音频
+	ISoundEngine *soundEngine_ = createIrrKlangDevice();
 };
 

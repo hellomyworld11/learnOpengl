@@ -6,6 +6,7 @@
 #include <tuple>
 #include <stdlib.h>
 #include "ParticleGenerator.h"
+#include "PostProcessor.h"
 
 
 
@@ -20,6 +21,7 @@ Game::Game(unsigned int width, unsigned int height) :
 
 Game::~Game()
 {
+	soundEngine_->drop();
 }
 
 void Game::init()
@@ -27,7 +29,9 @@ void Game::init()
 	//╪сть shader  texture
 	ResourceManager::loadShader("F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/sprite.vs", "F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/sprite.fs", nullptr, "sprite");
 	ResourceManager::loadShader("F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/particle.vs", "F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/particle.fs", nullptr, "particle");
-	
+	ResourceManager::loadShader("F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/post_processing.vs", 
+		"F:/mycode/sourceCC++/learnOpengl/myBreakOut/shaders/post_processing.fs", nullptr, "postprocessing");
+
 	glm::mat4 projecton = glm::ortho(0.0f, static_cast<GLfloat>(width_), static_cast<GLfloat>(height_)
 		,0.0f, -1.0f, 1.0f);
 
@@ -40,7 +44,6 @@ void Game::init()
 	renderer_ = new SpriteRenderer(ResourceManager::getShader("sprite"));
 
 	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/awesomeface.png", GL_TRUE, "face");
-
 
 	//load textures
 	ResourceManager::loadTexture("F:/mycode/sourceCC++/learnOpengl/myBreakOut/textures/background.png", GL_FALSE, "background");
@@ -77,6 +80,10 @@ void Game::init()
 	ball_ = new BallObject(ballPos, ball_radius_, ball_velocity_, ResourceManager::getTexture("ball"));
 
 	particles_ = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 500);
+	
+	effects_ = new PostProcessor(ResourceManager::getShader("postprocessing"), width_, height_);
+
+	soundEngine_->play2D("F:/mycode/sourceCC++/learnOpengl/myBreakOut/audio/breakout.mp3", true);
 }
 
 
@@ -167,6 +174,7 @@ void Game::checkCollisions()
 		if (!aBrick.isSolid_)
 		{
 			aBrick.isDestroyed_ = true;
+			soundEngine_->play2D("F:/mycode/sourceCC++/learnOpengl/myBreakOut/audio/bleep.mp3");
 		}
 
 		Direction dir = std::get<1>(collision);
@@ -218,6 +226,7 @@ void Game::checkCollisions()
 
 		std::cout << "2 ball_->velocity_: " << ball_->velocity_.x << " " << ball_->velocity_.y << std::endl;
 	
+		soundEngine_->play2D("F:/mycode/sourceCC++/learnOpengl/myBreakOut/audio/bleep.wav", false);
 	}
 }
 
